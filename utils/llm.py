@@ -16,11 +16,16 @@ class LLM:
         client = OpenAI()
         return client
 
-    def make_completion(self, messages: list):
-        completion = self.client.chat.completions.create(
-            model=self.model, messages=messages,
-            response_format={"type": "json_object"})
+    def make_completion(self, messages: list, json: bool = True):
+        if json:
+            completion = self.client.chat.completions.create(
+                model=self.model, messages=messages,
+                response_format={"type": "json_object"})
+        else:
+            completion = self.client.chat.completions.create(
+                model=self.model, messages=messages)
         return completion.choices[0].message
+    
 
     def make_completion_stream(self, messages: list):
         stream = self.client.chat.completions.create(
